@@ -1,0 +1,1 @@
+{"name":"LFP Battery Calculator","description":"Calculate Lithium Iron Phosphate (LFP) battery capacity, watt-hours, and depth of discharge curves.","requestFramePermissions":[],"majorCapabilities":["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- White Circle Background (66dp Safe Area) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,21 A33,33 0,1 0,54,87 A33,33 0,1 0,54,21 Z" />
+
+    <!-- Battery Outline and Body (Professional deep blue) -->
+    <path
+        android:fillColor="#0D47A1"
+        android:pathData="M49,34h10v4h-10z M42,38h24c1.1,0 2,0.9 2,2v28c0,1.1 -0.9,2 -2,2H42c-1.1,0 -2,-0.9 -2,-2V40c0,-1.1 0.9,-2 2,-2z" />
+
+    <!-- Lightning Bolt Overlay (Vibrant Energetic Gold) -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M55,42 l-8,12 h6 l-3,10 l9,-13 h-6 Z" />
+        
+</vector>
