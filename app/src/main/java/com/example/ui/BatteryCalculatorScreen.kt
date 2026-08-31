@@ -183,6 +183,24 @@ fun BatteryCalculatorScreen(
                     text = { Text(t("tab_pro"), fontWeight = FontWeight.Bold) },
                     icon = { Icon(Icons.Default.Build, contentDescription = null) }
                 )
+                Tab(
+                    selected = activeTab == 5,
+                    onClick = { activeTab = 5 },
+                    text = { Text(t("tab_zener_calc"), fontWeight = FontWeight.Bold) },
+                    icon = { Icon(Icons.Default.Calculate, contentDescription = null) }
+                )
+                Tab(
+                    selected = activeTab == 6,
+                    onClick = { activeTab = 6 },
+                    text = { Text(t("tab_zener_pkg"), fontWeight = FontWeight.Bold) },
+                    icon = { Icon(Icons.Default.Inventory, contentDescription = null) }
+                )
+                Tab(
+                    selected = activeTab == 7,
+                    onClick = { activeTab = 7 },
+                    text = { Text(t("tab_zener_proj"), fontWeight = FontWeight.Bold) },
+                    icon = { Icon(Icons.Default.Architecture, contentDescription = null) }
+                )
             }
 
             Spacer(modifier = Modifier.height(6.dp))
@@ -220,6 +238,9 @@ fun BatteryCalculatorScreen(
                         viewModel = viewModel,
                         lang = viewModel.appLanguage
                     )
+                    5 -> ZenerSolarCalculatorTab(t)
+                    6 -> ZenerPackagesTab(t)
+                    7 -> ZenerProjectBuilderTab(t)
                 }
             }
         }
