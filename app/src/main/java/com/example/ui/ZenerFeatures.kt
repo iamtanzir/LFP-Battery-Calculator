@@ -25,11 +25,17 @@ import androidx.compose.ui.unit.sp
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.ui.platform.LocalContext
+import java.net.URLEncoder
+
 @Composable
 fun ZenerSolarCalculatorTab(t: (String) -> String) {
     var monthlyBill by remember { mutableStateOf("") }
     var roofSpace by remember { mutableStateOf("") }
     var isOffGrid by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -103,12 +109,40 @@ fun ZenerSolarCalculatorTab(t: (String) -> String) {
                         val batteryAh = recommendedKw * 200 // arbitrary rule of thumb
                         ResultRow(t("battery_capacity"), "${batteryAh.toInt()} Ah (48V)")
                     }
-                    val estPrice = if (isOffGrid) recommendedKw * 95000 else recommendedKw * 65000
-                    ResultRow(t("est_cost"), "৳ ${String.format("%,d", estPrice.toLong())}")
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("দ্রষ্টব্য: সোলার পণ্যের দাম প্রতিনিয়ত পরিবর্তনশীল হওয়ায় সঠিক বাজেট জানতে কোটেশন সাবমিট করুন।", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold)
                     
                     if (space > 0 && spaceNeeded > space) {
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(t("space_warning"), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelSmall)
+                    }
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(
+                        onClick = {
+                            try {
+                                val message = "Hello High Tech Company Bangladesh! I have calculated my solar requirements with the Bill Estimator App and would like to receive a custom quote.\n\n" +
+                                        "📋 *Estimation Details:*\n" +
+                                        "• *Monthly Electricity Bill:* ${bill.toInt()} BDT\n" +
+                                        "• *Available Roof Space:* ${if(space > 0) "${space.toInt()} sqft" else "N/A"}\n" +
+                                        "• *Recommended Capacity:* ${recommendedKw.roundToInt()} kW\n" +
+                                        "• *Panels Needed:* $panelsNeeded x 550W\n" +
+                                        "• *Battery Backup Needed:* ${if(isOffGrid) "Yes" else "No"}\n\n" +
+                                        "Please contact me back with the current quotation."
+                                val encodedMessage = URLEncoder.encode(message, "UTF-8")
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=8801556560580&text=$encodedMessage"))
+                                context.startActivity(intent)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                    ) {
+                        Icon(Icons.Default.Share, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Get Quotation on WhatsApp", fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -118,11 +152,12 @@ fun ZenerSolarCalculatorTab(t: (String) -> String) {
 
 @Composable
 fun ZenerPackagesTab(t: (String) -> String) {
+    val context = LocalContext.current
     val packages = listOf(
-        SolarPackage("1 kW Off-Grid System", "৳ 75,000", listOf("2 x 550W Solar Panels", "1 kVA Inverter", "1 x 100Ah Battery", "Installation & Accessories included")),
-        SolarPackage("3 kW Off-Grid System", "৳ 2,20,000", listOf("6 x 550W Solar Panels", "3 kVA Inverter", "2 x 150Ah Battery", "Installation & Accessories included")),
-        SolarPackage("5 kW Hybrid System", "৳ 4,50,000", listOf("10 x 550W Solar Panels", "5 kVA Hybrid Inverter", "4 x 200Ah Battery", "Net Metering Ready", "Installation & Accessories included")),
-        SolarPackage("10 kW On-Grid System", "৳ 6,50,000", listOf("20 x 550W Solar Panels", "10 kW On-Grid Inverter", "Net Metering Supported", "No Battery (Grid Tied)", "Installation & Accessories included"))
+        SolarPackage("1 kW Off-Grid System", listOf("2 x 550W Solar Panels", "1 kVA Inverter", "1 x 100Ah Battery", "Installation & Accessories included")),
+        SolarPackage("3 kW Off-Grid System", listOf("6 x 550W Solar Panels", "3 kVA Inverter", "2 x 150Ah Battery", "Installation & Accessories included")),
+        SolarPackage("5 kW Hybrid System", listOf("10 x 550W Solar Panels", "5 kVA Hybrid Inverter", "4 x 200Ah Battery", "Net Metering Ready", "Installation & Accessories included")),
+        SolarPackage("10 kW On-Grid System", listOf("20 x 550W Solar Panels", "10 kW On-Grid Inverter", "Net Metering Supported", "No Battery (Grid Tied)", "Installation & Accessories included"))
     )
 
     LazyColumn(
@@ -149,7 +184,6 @@ fun ZenerPackagesTab(t: (String) -> String) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                         Text(pkg.name, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-                        Text(pkg.price, fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.primary)
                     }
                     Spacer(modifier = Modifier.height(12.dp))
                     pkg.features.forEach { feature ->
@@ -160,7 +194,22 @@ fun ZenerPackagesTab(t: (String) -> String) {
                         }
                     }
                     Spacer(modifier = Modifier.height(12.dp))
-                    Button(onClick = { /* Contact Sales */ }, modifier = Modifier.fillMaxWidth()) {
+                    Button(
+                        onClick = {
+                            try {
+                                val message = "Hello High Tech Company Bangladesh! I am interested in your *${pkg.name}* and would like to receive the latest price quotation.\n\n" +
+                                        "📋 *Package Features:*\n" +
+                                        pkg.features.joinToString("\n") { "• $it" } + "\n\n" +
+                                        "Please send me the quote."
+                                val encodedMessage = URLEncoder.encode(message, "UTF-8")
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=8801556560580&text=$encodedMessage"))
+                                context.startActivity(intent)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
                         Text(t("request_quote"))
                     }
                 }
@@ -175,6 +224,7 @@ fun ZenerProjectBuilderTab(t: (String) -> String) {
     var roofType by remember { mutableStateOf("Flat Concrete") }
     var targetCapacity by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -251,7 +301,22 @@ fun ZenerProjectBuilderTab(t: (String) -> String) {
                 )
 
                 Button(
-                    onClick = { showDialog = true },
+                    onClick = {
+                        try {
+                            val message = "Hello High Tech Company Bangladesh! I want to submit a new Solar Project design inquiry.\n\n" +
+                                    "📋 *Project Design Inquiry:*\n" +
+                                    "• *Project Type:* $projectType\n" +
+                                    "• *Roof Surface:* $roofType\n" +
+                                    "• *Target Capacity:* ${if(targetCapacity.isNotEmpty()) "$targetCapacity kW" else "Not Specified"}\n\n" +
+                                    "Please contact me back with feasibility and estimated quotation details."
+                            val encodedMessage = URLEncoder.encode(message, "UTF-8")
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=8801556560580&text=$encodedMessage"))
+                            context.startActivity(intent)
+                            showDialog = true
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth().height(50.dp)
                 ) {
                     Text(t("submit_project_req"))
@@ -264,7 +329,7 @@ fun ZenerProjectBuilderTab(t: (String) -> String) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
             title = { Text(t("req_submitted")) },
-            text = { Text(t("req_submitted_desc")) },
+            text = { Text("আপনার প্রজেক্ট ডিজাইন রিকোয়েস্টটি সফলভাবে তৈরি করা হয়েছে এবং তথ্যগুলো সহ হোয়াটসঅ্যাপে পাঠানো হয়েছে।") },
             confirmButton = {
                 TextButton(onClick = { showDialog = false }) {
                     Text("OK")
@@ -282,4 +347,4 @@ fun ResultRow(label: String, value: String) {
     }
 }
 
-data class SolarPackage(val name: String, val price: String, val features: List<String>)
+data class SolarPackage(val name: String, val features: List<String>)

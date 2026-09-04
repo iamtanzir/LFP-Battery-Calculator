@@ -62,16 +62,16 @@ class BatteryViewModel(application: Application) : AndroidViewModel(application)
 
     // Standard household appliances
     val standardAppliances = listOf(
-        Appliance("light", "LED Light", "এলইডি লাইট", 15.0, 1.0, "lightbulb"),
-        Appliance("fan", "Ceiling Fan", "সিলিং ফ্যান", 80.0, 1.5, "mode_fan"),
-        Appliance("tv", "Smart LED TV", "স্মার্ট টিভি", 75.0, 1.2, "tv"),
-        Appliance("router", "Wi-Fi Router", "ওয়াই-ফাই রাউটার", 15.0, 1.0, "router"),
+        Appliance("light", "LED Bulb", "এলইডি বাল্ব", 9.0, 1.0, "lightbulb"),
+        Appliance("fan", "Ceiling Fan", "সিলিং ফ্যান", 75.0, 1.5, "mode_fan"),
+        Appliance("ac", "Air Conditioner", "এয়ার কন্ডিশনার", 1500.0, 2.5, "ac_unit"),
+        Appliance("tv", "LED Television", "এলইডি টিভি", 100.0, 1.2, "tv"),
         Appliance("fridge", "Refrigerator", "রেফ্রিজারেটর", 150.0, 3.0, "kitchen"),
-        Appliance("pump", "Water Pump (0.5 HP)", "পানির পাম্প", 375.0, 3.0, "water"),
-        Appliance("ac", "Air Conditioner (1 Ton)", "এসি (১ টন)", 1200.0, 2.5, "ac_unit"),
-        Appliance("laptop", "Laptop Charger", "ল্যাপটপ চার্জার", 65.0, 1.2, "laptop"),
-        Appliance("microwave", "Microwave Oven", "মাইক্রোওয়েভ ওভেন", 1000.0, 1.5, "microwave"),
-        Appliance("mobile", "Smart Phone Charger", "মোবাইল চার্জার", 18.0, 1.0, "smartphone")
+        Appliance("pump", "Water Pump (1 HP)", "পানির পাম্প (১ ঘোড়া)", 750.0, 3.0, "water"),
+        Appliance("desktop", "Computer Desktop", "কম্পিউটার ডেস্কটপ", 200.0, 1.2, "computer"),
+        Appliance("mobile", "Smartphone Charger", "মোবাইল চার্জার", 15.0, 1.0, "smartphone"),
+        Appliance("router", "Wifi Router", "ওয়াইফাই রাউটার", 10.0, 1.0, "router"),
+        Appliance("iron", "Electric Iron", "ইলেকট্রিক ইস্ত্রি", 1000.0, 1.0, "iron")
     )
 
     // Current State Settings with SharedPreferences Auto-saving
@@ -137,6 +137,11 @@ class BatteryViewModel(application: Application) : AndroidViewModel(application)
         // Initialize default quantities
         standardAppliances.forEach { this[it.id] = 0 }
     }
+    
+    // Map to keep running hours of selected appliances
+    val applianceHours = mutableStateMapOf<String, Int>().apply {
+        standardAppliances.forEach { this[it.id] = 12 }
+    }
 
     private var isPreferencesLoading = false
 
@@ -153,6 +158,7 @@ class BatteryViewModel(application: Application) : AndroidViewModel(application)
             putString("app_language", appLanguage)
             standardAppliances.forEach { appliance ->
                 putInt("appliance_qty_${appliance.id}", applianceQuantities[appliance.id] ?: 0)
+                putInt("appliance_hrs_${appliance.id}", applianceHours[appliance.id] ?: 12)
             }
             apply()
         }
@@ -179,6 +185,7 @@ class BatteryViewModel(application: Application) : AndroidViewModel(application)
             standardAppliances.forEach { appliance ->
                 val defaultQty = 0
                 applianceQuantities[appliance.id] = sharedPrefs.getInt("appliance_qty_${appliance.id}", defaultQty)
+                applianceHours[appliance.id] = sharedPrefs.getInt("appliance_hrs_${appliance.id}", 12)
             }
         } finally {
             isPreferencesLoading = false

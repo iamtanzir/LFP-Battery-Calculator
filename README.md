@@ -1,61 +1,40 @@
-# LFP Battery Calculator & Solar Hub
+# Zener BD Solar Calculator
 
-A modern, highly optimized Android application designed for solar enthusiasts, engineers, and DIY battery builders. It helps calculate, model, and manage Lithium Iron Phosphate (LiFePO4) battery packs, load configurations, and solar installations.
-
----
+A modern, highly optimized Android application designed for calculating solar requirements, modeling battery systems, and generating project quotations, styled after the Zener BD calculator.
 
 ## 📱 Key Features
 
-### 1. ⚡ LFP Pro Tools & Calculators
-* **LFP Pack Spec & Energy Calculator:** Customize Series (S) and Parallel (P) configuration with custom nominal voltage and capacity inputs to determine total pack voltage, capacity, and overall energy in Wh and kWh.
-* **Lead-Acid Equivalency Advantage:** Compare LFP packs with standard Lead-Acid counterparts under usable Depth of Discharge (DoD) values.
-* **Interactive Discharge Curve Chart:** Visualizes the uniquely flat discharge plateau of LiFePO4 cells. Includes a responsive touch crosshair to display real-time State of Charge (SoC) vs. individual cell and overall pack voltages.
-* **Capacity Unit Converter:** Quickly convert values across metrics including **Ah, Wh, kWh, Joules, MegaJoules, and BTUs** with real-time nominal voltage reference.
+### 1. ☀️ Smart Solar Calculator Wizard
+* **Step 1: Load Sizing:** Add standard appliances (Fans, ACs, Lights, Pumps) and configure quantities and daily running hours. Automatically calculates Peak Sizing Load and Daily Energy Demand.
+* **Step 2: Backup Preferences:** Configure daily daylight running hours, nighttime battery backup requirements, and select the system type (Hybrid Off-Grid, Net Metering, etc.).
+* **Step 3: Result & Quotation:** Instant generation of system recommendations, including Inverter Capacity, Solar Panel KW, Battery Bank Ah, and an estimated total budget.
 
-### 2. 🔌 Devices & Load Management
-* Define device lists and calculate daily load requirements.
-* Analyze dynamic backups based on real-time power consumption metrics.
+### 2. 📦 Ready Solar Packages
+* Browse pre-configured solar packages tailored for residential and commercial needs.
+* View included features, total pricing, and request custom installations.
 
-### 3. 🔋 Custom Battery Setup
-* Configure battery chemistry options, nominal system voltage parameters, and required backup hours.
-* Auto-calculate suggested minimal battery storage size in Ah.
-
-### 4. ☀️ Solar Grid & Off-Grid Guide
-* Access optimized guides and wiring templates for off-grid PV architectures.
-* Tips for sizing solar charge controllers (MPPT/PWM), inverters, and fuse ratings.
-
-### 5. 💾 Saved Packs & Configuration History
-* Safely store and organize your custom battery configuration models locally on the device.
-
----
+### 3. 🏗️ Project Builder
+* A complete quotation request form for custom installations.
+* Input roof types, target capacity, and project type to directly connect with engineering teams.
 
 ## 🛠️ Technology Stack & Architecture
 
 This application is built using modern Android development practices:
+* **Jetpack Compose:** Declarative UI styled with Material Design 3 guidelines, enforcing a custom dark/yellow Zener brand theme.
+* **MVVM Architecture:** Clean separation of business logic and UI state via Kotlin ViewModels.
+* **Coroutines & StateFlow:** Smooth reactive state handling.
+* **Multilingual Localizer:** Includes robust localization for English and Bengali to serve a broad audience.
 
-* **Jetpack Compose:** Declarative UI styled using Material Design 3 (M3) guidelines, featuring a dynamic light/dark theme, responsive canvas graphics, and adaptive layouts.
-* **MVVM Architecture (Model-View-ViewModel):** Decoupled layers separating business logic from visual representations.
-* **Room Database:** Secure, highly efficient local SQLite database mapping to Kotlin structures for pack storage and historical data persistence.
-* **Localization & Multilingual Support:** Comprehensive support for **English (en)**, **Bengali (bn)**, and **Chinese (zh)** out-of-the-box.
-* **StateFlow & Coroutines:** Native Kotlin asynchronous APIs ensuring smooth UI render cycles and non-blocking computations.
+## 🚀 Getting Started
 
----
+To build and compile the application:
 
-## 🚀 Getting Started (Build & Run)
-
-### Prerequisites
-* **Android SDK:** API level 26 (Android 8.0) or higher.
-* **Kotlin:** 1.9.x
-* **Gradle:** 8.x (Kotlin DSL)
-
-### Compiling and Generating the APK
-1. Open the project in your standard Android IDE or terminal environment.
-2. Run the Gradle build task to generate the debug APK:
+1. Clone or download the repository.
+2. Run the Gradle build task to generate the APK:
    ```bash
    gradle assembleDebug
    ```
-3. Locate the compiled APK in:
-   ```path
-   app/build/outputs/apk/debug/app-debug.apk
-   ```
-4. Install the generated `.apk` directly onto your Android test phone or emulator.
+3. The APK will be available in the `app/build/outputs/apk/debug/` directory.
+
+---
+*Built with ❤️ for Solar Enthusiasts.*

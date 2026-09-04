@@ -238,7 +238,7 @@ fun BatteryCalculatorScreen(
                         viewModel = viewModel,
                         lang = viewModel.appLanguage
                     )
-                    5 -> ZenerSolarCalculatorTab(t)
+                    5 -> ZenerSolarCalculatorWizard(viewModel = viewModel, t = t)
                     6 -> ZenerPackagesTab(t)
                     7 -> ZenerProjectBuilderTab(t)
                 }
@@ -795,6 +795,8 @@ fun ApplianceSelectionTab(
                             "ac_unit" -> Icons.Default.AcUnit
                             "laptop" -> Icons.Default.Laptop
                             "microwave" -> Icons.Default.SoupKitchen
+                            "computer" -> Icons.Default.DesktopWindows
+                            "iron" -> Icons.Default.Iron
                             else -> Icons.Default.Smartphone
                         }
 
